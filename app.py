@@ -245,8 +245,52 @@ def impack_of_discount_on_sales(file):
 
 print(impack_of_discount_on_sales(myvar))
 
+#Shipping & Delivery
 
+#Average Delivery Time
+def avg_delivery_time(file):
+    print('Average Delivery Time')
+    deliveryDate = pd.to_datetime(file['DeliveryDate']);
+    orderDate = pd.to_datetime(file['OrderDate'])
+    # The 'f' before the quotes tells Python to look for {variables} inside
+    return f"{round((deliveryDate - orderDate).dt.days.mean())} days"         
+print(avg_delivery_time(myvar))
 
+#Fastest vs Slowest Region delivery
+def fastest_or_slowest_region_delivery(file):
+    print('Fastest vs Slowest Region delivery')
+    deliveryDate = pd.to_datetime(file['DeliveryDate']);
+    orderDate = pd.to_datetime(file['OrderDate'])
+    file["TimeTakenDelivery"] = (deliveryDate - orderDate).dt.days
+
+    filterTimeDelivery =  file.groupby('Region')['TimeTakenDelivery'].mean().round(1)
+    return f"Slowest Region : {filterTimeDelivery.idxmax()},Fastest Region : {filterTimeDelivery.idxmin()}"
+
+print(fastest_or_slowest_region_delivery(myvar));
+
+#ShippingCost vs Revenue correlation
+def shippingcost_or_revenue_correlation(file):
+    print('ShippingCost vs Revenue correlation')
+    file['CostToSaleRatio'] = file['ShippingCost'] / file['Revenue (Gross)']
+    return file['CostToSaleRatio'].round(2).sort_values(ascending=False).head(5);
+    # correlation = file['ShippingCost'].corr(file['Revenue (Gross)'])
+
+    # return f"Correlation Coefficient: {correlation:.2f}"
+
+print(shippingcost_or_revenue_correlation(myvar))
+
+# Returns Analysis
+
+# Return rate (% of orders returned)
+def return_rate(file):
+    print('Return rate (% of orders returned)')
+    total_order = len(file)
+
+    len_returned_order = len(file[file['Returned'] == 1])
+
+    return f"Return Rate = {(len_returned_order/total_order)*100}%"
+
+print(return_rate(myvar));
 
 
 
