@@ -332,9 +332,36 @@ def avg_order_handled_per_salesperson(file):
 
 print(avg_order_handled_per_salesperson(myvar));
 
+# Revenue after discount
+def revenue_after_discount(file):
+    print('Revenue after discount')
+    file['RevenueAfterDiscount'] = file['Revenue (Gross)'] * (1 - file['Discount']);
+    totalRevenue = file['Revenue (Gross)'].sum();
+    totalRevenueAfterDiscount = file['Discount'].sum();
+    total = totalRevenue - totalRevenueAfterDiscount;
+    return f"Total Revenue : ${totalRevenue.round(2)}, Discounted: ${totalRevenueAfterDiscount.round(2)}, Total : ${total.round(2)}"
+
+print(revenue_after_discount(myvar));
+
+# Effective price after discount
+def effective_price_after_discount(file):
+    print('Effective price after discount')
+    file['EffectivePrice'] = file['UnitPrice'] * (1 - file['Discount']);
+    return file.groupby('Product')['EffectivePrice'].mean().sort_values(ascending=False).head();
 
 
+print(effective_price_after_discount(myvar));
 
+# High revenue but low margin products
+def high_revenue_but_low_margin_products(file):
+    print('High revenue but low margin products')
+    file['Margin'] = file['Revenue (Gross)'] - file['ShippingCost']
+    return file.groupby('Product').agg({
+        'Revenue (Gross)':'sum',
+        'Margin':'mean'
+    }).sort_values(by='Revenue (Gross)', ascending=False).head(5);
+
+print(high_revenue_but_low_margin_products(myvar));
 
 
 
