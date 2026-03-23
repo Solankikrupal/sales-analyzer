@@ -292,6 +292,49 @@ def return_rate(file):
 
 print(return_rate(myvar));
 
+# Products with highest returns
+def products_with_highest_returns(file):
+    print('Products with highest returns')
+    returned_orders = file[file['Returned'] == 1]
+    return returned_orders.groupby('Product')['OrderID'].count().sort_values(ascending=False).head();
+
+print(products_with_highest_returns(myvar));
+
+# Region with highest returns
+
+def region_with_highest_returns(file):
+    print('Region with highest returns')
+    returned_orders = file[file['Returned'] == 1]
+    return returned_orders.groupby('Region')['OrderID'].count().sort_values(ascending=False).head(1);
+
+print(region_with_highest_returns(myvar));
+
+# Salesperson Performance
+
+# Revenue by Salesperson
+def revenue_by_salesperson(file):
+    print('Revenue by Salesperson')
+    return file.groupby('Salesperson')['Revenue (Gross)'].sum().sort_values(ascending=False).head();
+
+print(revenue_by_salesperson(myvar));
+
+# Top salesperson
+def top_salesperson(file):
+    print('Top salesperson')
+    return file.groupby('Salesperson')['Revenue (Gross)'].sum().sort_values(ascending=False).head(1);
+
+print(top_salesperson(myvar));
+
+#Avg order handled per salesperson
+def avg_order_handled_per_salesperson(file):
+    print('Avg order handled per salesperson')
+    return file.groupby('Salesperson')['OrderID'].count().sort_values(ascending=False).head();
+
+print(avg_order_handled_per_salesperson(myvar));
+
+
+
+
 
 
 
