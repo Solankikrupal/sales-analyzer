@@ -363,5 +363,47 @@ def high_revenue_but_low_margin_products(file):
 
 print(high_revenue_but_low_margin_products(myvar));
 
+# Growth Analysis
 
+# Month-over-Month Growth
 
+def month_over_month_growth(file):
+    print('Month-over-Month Growth')
+    file['OrderDate'] = pd.to_datetime(file['OrderDate'])
+    monthly_revenue = file.groupby(file['OrderDate'].dt.to_period('M'))['Revenue (Gross)'].sum()
+    growth = monthly_revenue.pct_change().fillna(0) * 100
+    return growth.round(2);
+
+print(month_over_month_growth(myvar));
+
+# Region growth comparison
+
+def region_growth_comparison(file):
+    print('Region growth comparison')
+    file['OrderDate'] = pd.to_datetime(file['OrderDate'])
+    region_monthly_revenue = file.groupby(['Region', file['OrderDate'].dt.to_period('M')])['Revenue (Gross)'].sum().unstack(level=0)
+    region_growth = region_monthly_revenue.pct_change().fillna(0) * 100
+    return region_growth.round(2);
+
+print(region_growth_comparison(myvar));
+
+# Product growth trend
+
+def product_growth_trend(file):
+    print('Product growth trend')
+    file['OrderDate'] = pd.to_datetime(file['OrderDate'])
+    product_monthly_revenue = file.groupby(['Product', file['OrderDate'].dt.to_period('M')])['Revenue (Gross)'].sum().unstack(level=0)
+    product_growth = product_monthly_revenue.pct_change().fillna(0) * 100
+    return product_growth.round(2);
+
+print(product_growth_trend(myvar));
+
+# Segmentation
+
+# Best product for each region
+
+def best_product_for_each_region(file):
+    print('Best product for each region')
+    return file.groupby(['Region', 'Product'])['Revenue (Gross)'].sum().sort_values(ascending=False).groupby(level=0).head(1);
+
+print(best_product_for_each_region(myvar));
