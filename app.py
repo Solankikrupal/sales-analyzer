@@ -407,3 +407,33 @@ def best_product_for_each_region(file):
     return file.groupby(['Region', 'Product'])['Revenue (Gross)'].sum().sort_values(ascending=False).groupby(level=0).head(1);
 
 print(best_product_for_each_region(myvar));
+
+# Efficiency Metrics
+
+# Revenue per order
+def revenue_per_order(file):
+    print('Revenue per order')
+    return file.groupby('OrderID')['Revenue (Gross)'].sum().mean().round(2);
+
+print(revenue_per_order(myvar));
+
+# Revenue per customer
+def revenue_per_customer(file):
+    print('Revenue per customer')
+    return file.groupby('CustomerName')['Revenue (Gross)'].sum().mean().round(2);
+
+print(revenue_per_customer(myvar));
+
+# Revenue per salesperson
+def revenue_per_salesperson(file):
+    print('Revenue per salesperson')
+    return file.groupby('Salesperson')['Revenue (Gross)'].sum().mean().round(2);
+
+print(revenue_per_salesperson(myvar));
+
+# Pattern Detection
+# Which promotion works best for which product
+def best_promotion_for_each_product(file):
+    print('Which promotion works best for which product')
+    return file.groupby(['Product', 'Promotion'])['Revenue (Gross)'].sum().sort_values(ascending=False).groupby(level=0).head(1);
+print(best_promotion_for_each_product(myvar));
